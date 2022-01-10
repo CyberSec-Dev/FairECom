@@ -1,6 +1,6 @@
 # FairECom
  Prototype implementation of FairECom 
 
-##Background
-##Install
-##Usage
+## Background
+## Install
+## Usage
