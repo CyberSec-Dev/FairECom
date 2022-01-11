@@ -14,4 +14,17 @@ We used the `Mysql database`, and the database generation statements at each sid
     B's sig. verf. success. tid=93d336256cb2fc7b61c9030d24d0f031
     V's sig. verf. success. tid=94be6b672a642c5c33415e7ccc13c00c
     B's sig. verf. success. tid=94be6b672a642c5c33415e7ccc13c00c
+    
+    Please enter verification type: 1. Membership verification 2.Cardinality verification 3.quit
+    1
+    Proof of membership start.
+    Please enter the transaction id to be verified(You can choose the transaction id in table list_order,
+    such as 0006ec9db01a64e59a68b2c340bf65a7,08bf457a7ecf8ba28efb48f0add11cca...):
+    0006ec9db01a64e59a68b2c340bf65a7
+    C send attestation to M.
+    C read Acc from Ethereum.
+    acc=f83fa70122be19ebfcd64b87d46d1e8c71b9be6a9789e7730c178ac8ad7ceeb0
+    C read proof from M.
+    Acc verf. success.
+    Membership verf. success.
 ## License
