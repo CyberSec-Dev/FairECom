@@ -11,7 +11,7 @@ We used the `Mysql database`, and the database generation statements at each sid
 
 ## Usage
     V's sig. verf. success. tid=93d336256cb2fc7b61c9030d24d0f031
-    B's sig. verf. success. tid=93d336256cb2fc7b61c9030d24d0f031<br>
-    V's sig. verf. success. tid=94be6b672a642c5c33415e7ccc13c00c<br>
-    B's sig. verf. success. tid=94be6b672a642c5c33415e7ccc13c00c<br>
+    B's sig. verf. success. tid=93d336256cb2fc7b61c9030d24d0f031
+    V's sig. verf. success. tid=94be6b672a642c5c33415e7ccc13c00c
+    B's sig. verf. success. tid=94be6b672a642c5c33415e7ccc13c00c
 ## License
