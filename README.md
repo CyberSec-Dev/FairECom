@@ -2,7 +2,7 @@
  Prototype implementation of FairECom 
 
 ## Background
-We have five programs FairCustomer, FairVendor, FairManager, PBB, FairBank. Among them, FairCustomer works on the Customer side, FairVendor works on the Vendor side, FairManager and PBB work on the Manager side, and FairBank works on the Bank side. 
+We have five programs `FairCustomer`, `FairVendor`, FairManager, PBB, FairBank. Among them, FairCustomer works on the Customer side, FairVendor works on the Vendor side, FairManager and PBB work on the Manager side, and FairBank works on the Bank side. Customer, Vendor, Manager and Bank interact to establish transactions, and Customer and Manager interact to verify whether the transaction price is fair. 
 ![Network model of FairECom](./image/fig1.png "Network model of FairECom")
 
 ## Install
