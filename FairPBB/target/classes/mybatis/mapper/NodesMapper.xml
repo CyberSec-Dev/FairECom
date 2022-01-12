@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fairworld.mapper.NodesMapper">
+
+    <select id="getNodesById" resultType="Nodes">
+        select * from nodes where product_id = #{id};
+    </select>
+
+    <insert id="insertNodes" parameterType="Nodes" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into nodes(id,product_id,root,price_root,transaction_hash,contract_hash,price,number)
+        values (#{id},#{productId},#{root},#{priceRoot},#{transactionHash},#{contractHash},#{price},#{number})
+    </insert>
+
+    <select id="getNodeByRoot" resultType="Nodes">
+        select * from nodes where price_root = #{priceRoot} and product_id = #{productId};
+    </select>
+
+</mapper>
