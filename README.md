@@ -13,8 +13,6 @@ Our FairECom is implemented by Java, with the built-in random number generator, 
 
 The FairPBB is a project based on Spring Boot, and uses web3j library to provide Ethereum related support. The FairPBB, or ledger, allows a third party (i.e., a manager) to publish compactly  statistical information of customers’ transactions in a privacy-preserving way  and any parties can access it. For each payment item, the PBB publishes the number of transactions and a  digest, i.e., Merkle Tree root, for each price. With the help of the published  information, a customer can attest that he/she had been treated fairly (i.e., with fair price charge/payment) on specific transaction.
 
-![Network model of FairECom](./image/fig1.png "Network model of FairECom")
-
 ## Environmental requirements
 
 - JDK 1.8+
@@ -43,7 +41,7 @@ We need  four computers to simulate`Customer`, `Vendor`, `Manager` and `Bank` re
 ```java
  <dataSource type="POOLED">
             <property name="driver" value="com.mysql.jdbc.Driver"/>
-            <property name="url" value="jdbc:mysql://localhost:3306/test?          					useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8"/>
+            <property name="url" value="jdbc:mysql://localhost:3306/test?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8"/>
             <property name="username" value="root"/>
             <property name="password" value="123456"/>
         </dataSource>
