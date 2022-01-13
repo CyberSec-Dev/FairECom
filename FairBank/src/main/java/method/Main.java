@@ -1,10 +1,12 @@
 package method;
 
+import msg.RSAKey1;
 import msg.SignBankMsg;
 import msg.SignVendorMsg;
 import pojo.Transaction;
 
 import javax.crypto.Cipher;
+import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigInteger;
@@ -18,13 +20,15 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] agrs) throws Exception {
         System.out.println("Bank start!");
-        // RSA
-        int RSAkeylen = 2048;
-        KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
-        kpg.initialize(RSAkeylen);
-        KeyPair kp = kpg.generateKeyPair();
-        RSAPrivateKey privateKeyB = (RSAPrivateKey) kp.getPrivate();
-        RSAPublicKey publicKeyB = (RSAPublicKey) kp.getPublic();
+
+        FileInputStream fin=new FileInputStream("./bankRSAKey");
+        ObjectInputStream in=new ObjectInputStream(fin);
+        ArrayList<RSAKey1> keys=(ArrayList<RSAKey1>) in.readObject();
+        RSAPublicKey publicKeyC=keys.get(0).getPublicKey();
+        RSAPublicKey publicKeyB=keys.get(2).getPublicKey();
+        RSAPrivateKey privateKeyB=keys.get(2).getPrivateKey();
+        RSAPublicKey publicKeyV=keys.get(1).getPublicKey();
+
         ServerSocket socket=new ServerSocket(8087);
         while(true) {
             Socket s = socket.accept();
@@ -33,10 +37,10 @@ public class Main {
             SignVendorMsg signVendorMsg = (SignVendorMsg) oisVendor.readObject();
             ArrayList<byte[]> msgv = signVendorMsg.getMsg();
             ArrayList<byte[]> signc = signVendorMsg.getSignClient();
-            RSAPublicKey publicKeyC = signVendorMsg.getPublicKeyClient();
+          //  RSAPublicKey publicKeyC = signVendorMsg.getPublicKeyClient();
             ArrayList<byte[]> signv1 = signVendorMsg.getSignVendor1();
             ArrayList<byte[]> signv2 = signVendorMsg.getSignVendor2();
-            RSAPublicKey publicKeyV = signVendorMsg.getPublicKeyVendor();
+            //RSAPublicKey publicKeyV = signVendorMsg.getPublicKeyVendor();
             for (int i = 0; i < signc.size(); i++) {
                 String[] array = new String(msgv.get(i)).split(",");
                 String msg1 = array[0] + "," + array[1] + "," + array[2] + "," + array[3] + "," + array[4] + "," + array[5];
@@ -56,14 +60,14 @@ public class Main {
                     System.out.println("V's sig. verf. fail. tid="+array[0]);
                 }
             }
-//            for(int i=0;i<msgv.size();i++){
-//                String[] array1 = new String(msgv.get(i)).split(",");
-//                if(query.getTransaction(array1[0])==null){
-//                    //query.insertTransaction(new Transaction(array1[0]));
-//                }else{
-//                    System.out.println("This transaction already exist!");
-//                }
-//            }
+            for(int i=0;i<msgv.size();i++){
+                String[] array1 = new String(msgv.get(i)).split(",");
+                if(query.getTransaction(array1[0])==null){
+                    //query.insertTransaction(new Transaction(array1[0]));
+                }else{
+                    System.out.println("This transaction already exist!");
+                }
+            }
 
             ArrayList<byte[]> signB1 = new ArrayList<>();
             ArrayList<byte[]> signB2 = new ArrayList<>();
@@ -75,7 +79,7 @@ public class Main {
                 byte[] sign1 = RSA(privateKeyB, msg1.getBytes());
                 signB2.add(sign1);
             }
-            SignBankMsg signb = new SignBankMsg(msgv, signc, publicKeyC, signv1, signv2, publicKeyV, signB1, signB2, publicKeyB);
+            SignBankMsg signb = new SignBankMsg(msgv, signc, signv1, signv2,  signB1, signB2);
             oosVendor.writeObject(signb);
            // System.out.println("Bank finish!");
         }
