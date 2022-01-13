@@ -23,6 +23,7 @@
         <mapper resource="dao/ManagerMapper.xml"/>
         <mapper resource="dao/NodesMapper.xml"/>
         <mapper resource="dao/list_orderMapper.xml"/>
+        <mapper resource="dao/NodeMapper.xml"/>
 
     </mappers>
 

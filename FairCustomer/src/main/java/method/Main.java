@@ -14,20 +14,28 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws Exception {
           System.out.println("Client start!");
-          Socket socketVendor = new Socket("127.0.0.1", 8089);
-          if (socketVendor == null)
-                    return;
-          ObjectOutputStream oosVendor = new ObjectOutputStream(socketVendor.getOutputStream());
-          ObjectInputStream oisVendor = new ObjectInputStream(socketVendor.getInputStream());
+          while(true){
+              System.out.println("Please enter an action to perform ：1.Create transactions.  2.Verify transactions.  3.Quit" );
+              Scanner scan =new Scanner(System.in);
+              String s=scan.next();
+              if(s.equals("1")) {
+                  Socket socketVendor = new Socket("127.0.0.1", 8089);
+                  if (socketVendor == null)
+                      return;
+                  ObjectOutputStream oosVendor = new ObjectOutputStream(socketVendor.getOutputStream());
+                  ObjectInputStream oisVendor = new ObjectInputStream(socketVendor.getInputStream());
 
-          OrderFulfill orderFulfill = new OrderFulfill();
-          ArrayList<RSAPublicKey> publickeys = orderFulfill.orderFulfill(oosVendor, oisVendor);
-          oosVendor.close();
-          oisVendor.close();
-
-          AttestVerify attestVerify = new AttestVerify();
-          attestVerify.attestVerify(publickeys);
+                  OrderFulfill orderFulfill = new OrderFulfill();
+                  orderFulfill.orderFulfill(oosVendor, oisVendor);
+                  oosVendor.close();
+                  oisVendor.close();
+              }else if(s.equals("2")) {
+                  AttestVerify attestVerify = new AttestVerify();
+                  attestVerify.attestVerify();
+              }else{
+                  break;
+              }
             }
-
+    }
 
 }

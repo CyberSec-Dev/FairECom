@@ -21,6 +21,7 @@
 
     <mappers>
         <mapper resource="dao/ManagerMapper.xml"/>
+        <mapper resource="dao/NodeMapper.xml"/>
     </mappers>
 
 </configuration>

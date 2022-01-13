@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dao.NodeMapper">
+    <insert id="addNode" parameterType="pojo.node" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into node (id,product_id,transaction_hash,contract_hash,price,number,str_index)
+        values (#{id},#{productId},#{transactionHash},#{contractHash},#{price},#{number},#{strIndex})
+    </insert>
+
+    <select id="IfExistProduct" resultType="pojo.node">
+        select * from node where product_id = #{productId}
+    </select>
+
+</mapper>

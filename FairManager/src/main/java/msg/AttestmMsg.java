@@ -5,13 +5,14 @@ public class AttestmMsg extends Message{
 	 * 
 	 */
 	private static final long serialVersionUID = -623522065819852026L;
-	private int pos;
+	//private int pos;
+	private byte[] hash;
 	private String serviceID;
 	private double price;
 	//private ArrayList<Integer> rands;
 
-	public AttestmMsg(int pos, String serviceID, double price) {
-		this.pos = pos;
+	public AttestmMsg(byte[] hash, String serviceID, double price) {
+		this.hash = hash;
 		this.serviceID = serviceID;
 		this.price = price;
 	}
@@ -35,9 +36,11 @@ public class AttestmMsg extends Message{
 		this.price = price;
 	}
 
-	public int getPos() {
-		return pos;
+	public byte[] getHash() {
+		return hash;
 	}
 
-
+	public void setHash(byte[] hash) {
+		this.hash = hash;
+	}
 }

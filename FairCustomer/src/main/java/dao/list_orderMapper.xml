@@ -9,4 +9,7 @@
     <select id="getList" resultType="pojo.list_order">
         select * from list_order where product_id = #{productId} and order_item_id=1 and price=#{price}
     </select>
+    <select id="getOrder" resultType="pojo.list_order">
+        select * from list_order where order_id = #{orderId}
+    </select>
 </mapper>

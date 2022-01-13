@@ -1,6 +1,7 @@
 package method;
 
 import msg.*;
+import pojo.list_order;
 import utils.Sha256Hash;
 import utils.query;
 
@@ -9,6 +10,7 @@ import java.io.*;
 import java.math.BigInteger;
 import java.net.Socket;
 import java.security.PublicKey;
+import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.*;
 
@@ -18,60 +20,21 @@ public class AttestVerify {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void attestVerify(ArrayList<RSAPublicKey> publickeys)
+	public void attestVerify()
 			throws Exception {
 		//oos.writeObject(new String("start verification"));
 		//oos.flush();
 		System.out.println("Attest-verify: verify transactions.");
-		//512
-		//String serviceId="aca2eb7d00ea1a7b8ebd4e68314663af";
-		//Double price=69.9;
-		//String tid="00a870c6c06346e85335524935c600c0";
+		FileInputStream fin=new FileInputStream("./RSAKey");
+		ObjectInputStream in=new ObjectInputStream(fin);
+		ArrayList<RSAKey1> keys=(ArrayList<RSAKey1>) in.readObject();
+		RSAPublicKey publicKeyBank=keys.get(2).getPublicKey();
+		RSAPublicKey publicKeyVendor=keys.get(1).getPublicKey();
 
-		//256
-//		String serviceId="154e7e31ebfa092203795c972e5804a6";
-//	Double price=23.99;
-//		String tid="041cba819a99569f87996b65b73ea82e";
-
-		//128
-		//Double price=19.99;
-		//String tid="05bb540accb9a3fc966280b894023c9c";
-
-
-		//64
-		//String serviceId="437c05a395e9e47f9762e677a7068ce7";
-//		Double price=47.65;
-//		String tid="0199115a1cbfc272c5bd53117772a64a";
-
-		//8
-//		Double price=53.79;
-//		String tid="0b87d9e59c7c19b041fe36e77aa33a42";
-
-		//4
-		//Double price=53.5;
-		//String tid="28e2f8073d78153ccf2053de91fc4db3";
-
-		//2
-		//Double price=50.21;
-		//String tid="00b8d354b36820e9d6131fd5173c5581";
-
-		//32
-		 String serviceId="99a4788cb24856965c36a24e339b6058";
-//		Double price=79.9;
-//		String tid="00c763284c0056eed753352f5559ff0a";
-
-		//Double price=89.9;
-		//String tid="01be661b8196707ef60f062632d6d1bd";
-
-//       16
-		Double price=74.0;
-		String tid="0006ec9db01a64e59a68b2c340bf65a7";
-
-
-		List<String> lists=query.getList(serviceId,price);
-		int size=lists.size();
+		//List<String> lists=query.getList(serviceId,price);
+		//int size=lists.size();
 		while(true) {
-			System.out.println("Please enter verification type: 1. Membership verification 2.Cardinality verification 3.quit");
+			System.out.println("Please enter verification type: 1. Membership verification.  2.Cardinality verification.  3.Quit");
 			Scanner scan = new Scanner(System.in);
 			String str1 = "0";
 			if (scan.hasNext()) {
@@ -86,29 +49,37 @@ public class AttestVerify {
 				ObjectOutputStream oos= new ObjectOutputStream(socketManager.getOutputStream());
 				ObjectInputStream ois = new ObjectInputStream(socketManager.getInputStream());
 				System.out.println("Proof of membership start.");
-				System.out.println("Transactions: ");
-				for (int i = 0; i < size; i++) {
-					System.out.println(i + 1 + "." + lists.get(i));
-				}
-				System.out.println("Please enter the transaction id to be verified:");
-				String pos = scan.next();
-				//byte[] verifyhash=hash(tid.getBytes());
-				int p = Integer.parseInt(pos) - 1;
-				byte[] verifyhash = hash(lists.get(p).getBytes());
-				AttestmMsg attestmMsg = new AttestmMsg(p, serviceId, price);
+				//System.out.println("Transactions: ");
+//				for (int i = 0; i < size; i++) {
+//					System.out.println(i + 1 + "." + lists.get(i));
+//				}
+				System.out.println("Please enter the transaction id to be verified(You can choose the transaction id in table list_order," );
+				System.out.println("i.e.b2e54b3ccbc9c423893aa9dbe19dcd73):");
+				String orderId = scan.next();
+
+				list_order order=query.getOrder(orderId);
+				byte[] verifyhash=hash(order.getOrderId().getBytes());
+				//int p = Integer.parseInt(order.get) - 1;
+				String serviceId1=order.getProductId();
+				double price1=order.getPrice();
+				//List<String> lists=query.getList(serviceId1,price1);
+				//int size=lists.size();
+				//System.out.println();
+				//byte[] verifyhash = hash(lists.get(p).getBytes());
+				AttestmMsg attestmMsg = new AttestmMsg(verifyhash, serviceId1, price1);
 				oos.writeObject(attestmMsg);
 				System.out.println("C send attestation to M.");
 				oos.flush();
 				oos.reset();
 				System.out.println("C read Acc from Ethereum.");
-				String acc = query.getPriceRoot(serviceId, price);
-				System.out.println("acc=" + acc);
+				String acc = query.getPriceRoot(serviceId1, price1);
+				System.out.println("ACC=" + acc);
 				ProvemMsg provemMsg = (ProvemMsg) ois.readObject();
 				System.out.println("C read proof from M.");
 				ArrayList<SiblingsMsg> siblingsm = provemMsg.getSiblings();
 				byte[] rootHash = generateRootbysiblings(siblingsm, verifyhash);
 				byte[] accverify = hash(rootHash, Integer.toString(siblingsm.size()).getBytes());
-				boolean a = acc.equals(new BigInteger(accverify).toString(16));
+				boolean a = acc.equals(new BigInteger(1,accverify).toString(16));
 				if (a) {
 					System.out.println("Acc verf. success.");
 					System.out.println("Membership verf. success.");
@@ -124,6 +95,13 @@ public class AttestVerify {
 				ObjectOutputStream oos= new ObjectOutputStream(socketManager.getOutputStream());
 				ObjectInputStream ois = new ObjectInputStream(socketManager.getInputStream());
 				System.out.println("Proof of cardinality start.");
+				System.out.println("Please enter the product id(i.e.ac6c3623068f30de03045865e4e10089):");
+				String productId=scan.next();
+				System.out.println("Please enter the price(i.e. 199.9):");
+				String s=scan.next();
+				double price2=Double.parseDouble(s);
+				List<String> lists=query.getList(productId,price2);
+				int size=lists.size();
 				System.out.println("Please enter the number of transactions to verify(1-" + lists.size() + ")");
 				int randNumber = Integer.parseInt(scan.next());
 				//System.out.println(randNumber);
@@ -140,7 +118,7 @@ public class AttestVerify {
 					}
 
 				}
-				AttestcMsg attestcMsg = new AttestcMsg(serviceId, price, rands);
+				AttestcMsg attestcMsg = new AttestcMsg(productId, price2, rands);
 				oos.writeObject(attestcMsg);
 				System.out.println("C send attestation to M.");
 				oos.flush();
@@ -155,8 +133,8 @@ public class AttestVerify {
 
 				ArrayList<TransactionSign> transactionRand = proveMsg.getTransactionRand();
 				System.out.println("C read Acc from Ethereum.");
-				String acc1 = query.getPriceRoot(serviceId, price);
-				System.out.println("acc=" + acc1);
+				String acc1 = query.getPriceRoot(productId, price2);
+				System.out.println("ACC=" + acc1);
 				if (Math.pow(2, height - 1) < setSize && Math.pow(2, height) >= setSize) {
 					System.out.println("Size verf. success.");
 				} else {
@@ -172,8 +150,8 @@ public class AttestVerify {
 						b=false;
 						System.out.println("Pos. verf. fail. pos="+rands.get(i));
 					}
-					byte[] msg1 = DERSA(publickeys.get(0), transactionRand.get(i).getSignV());
-					byte[] msg2 = DERSA(publickeys.get(1), transactionRand.get(i).getSignB());
+					byte[] msg1 = DERSA(publicKeyVendor, transactionRand.get(i).getSignV());
+					byte[] msg2 = DERSA(publicKeyBank, transactionRand.get(i).getSignB());
 					String[] array=new String(msg1).split(",");
 					String msg3 = transactionRand.get(i).toString();
 					if (new String(msg2).equals(msg3) && new String(msg1).equals(msg3)) {
@@ -201,7 +179,7 @@ public class AttestVerify {
 
 				}
 				byte[] accverify1 = hash(rootHash2, Integer.toString(height).getBytes());
-				if (acc1.equals(new BigInteger(accverify1).toString(16))) {
+				if (acc1.equals(new BigInteger(1,accverify1).toString(16))) {
 					System.out.println("Acc verf. success.");
 				} else {
 					b=false;

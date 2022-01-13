@@ -3,8 +3,11 @@ package method;
 
 
 import msg.*;
+import pojo.node;
 import pojo.t_manager;
 import utils.MerkleTree;
+import utils.Nodes;
+import utils.ethStorage;
 import utils.query;
 import javax.crypto.Cipher;
 import java.io.*;
@@ -13,6 +16,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +25,12 @@ public class Main {
     public static void main(String[] args) throws Exception {
         System.out.println("Manager start!");
         ServerSocket socket=new ServerSocket(8086);
+        FileInputStream fin=new FileInputStream("./managerRSAKey");
+        ObjectInputStream in=new ObjectInputStream(fin);
+        ArrayList<RSAKey1> keys=(ArrayList<RSAKey1>) in.readObject();
+        RSAPublicKey publicKeyC=keys.get(0).getPublicKey();
+        RSAPublicKey publicKeyB=keys.get(2).getPublicKey();
+        RSAPublicKey publicKeyV=keys.get(1).getPublicKey();
         while(true) {
 
         Socket s=socket.accept();
@@ -33,10 +43,10 @@ public class Main {
                 //SignVendorMsg signVendorMsg=(SignVendorMsg) oisManager.readObject();
                 ArrayList<byte[]> msgc = signVendorMsg.getMsg();
                 ArrayList<byte[]> signc = signVendorMsg.getSignClient();
-                RSAPublicKey publicKeyC = signVendorMsg.getPublicKeyClient();
+               // RSAPublicKey publicKeyC = signVendorMsg.getPublicKeyClient();
                 ArrayList<byte[]> signv1 = signVendorMsg.getSignVendor1();
                 ArrayList<byte[]> signv2 = signVendorMsg.getSignVendor2();
-                RSAPublicKey publicKeyV = signVendorMsg.getPublicKeyVendor();
+               // RSAPublicKey publicKeyV = signVendorMsg.getPublicKeyVendor();
                 for (int i = 0; i < signc.size(); i++) {
                     byte[] decrypted = DERSA(publicKeyC, signc.get(i));
                     String[] array=new String(msgc.get(i)).split(",");
@@ -64,22 +74,22 @@ public class Main {
                 ArrayList<byte[]> msgv = signBankMsg.getMsg();
                 ArrayList<byte[]> signv11 = signBankMsg.getSignVendor1();
                 ArrayList<byte[]> signv21 = signBankMsg.getSignVendor2();
-                RSAPublicKey publicKeyV1 = signBankMsg.getPublicKeyVendor();
+               // RSAPublicKey publicKeyV1 = signBankMsg.getPublicKeyVendor();
                 ArrayList<byte[]> signb1 = signBankMsg.getSignBank1();
                 ArrayList<byte[]> signb2 = signBankMsg.getSignBank2();
-                RSAPublicKey publicKeyb = signBankMsg.getPublicKeyBank();
+                //RSAPublicKey publicKeyb = signBankMsg.getPublicKeyBank();
                 for (int i = 0; i < msgv.size(); i++) {
                     String[] array = new String(msgv.get(i)).split(",");
                     String msg1 = array[0] + "," + array[1] + "," + array[3] + "," + array[4] + "," + array[5] + "," + array[6];
-                    byte[] decrypted = DERSA(publicKeyV1, signv11.get(i));
-                    byte[] decrypted1 = DERSA(publicKeyV1, signv21.get(i));
+                    byte[] decrypted = DERSA(publicKeyV, signv11.get(i));
+                    byte[] decrypted1 = DERSA(publicKeyV, signv21.get(i));
                     if (new BigInteger(decrypted).equals(new BigInteger(msgv.get(i))) && new BigInteger(decrypted1).equals(new BigInteger(msg1.getBytes()))) {
                         System.out.println("V's sig. verf. success. tid="+array[0]);
                     } else {
                         System.out.println("V's sig. verf. fail. tid="+array[0]);
                     }
-                    byte[] decrptedb1 = DERSA(publicKeyb, signb1.get(i));
-                    byte[] decrptedb2 = DERSA(publicKeyb, signb2.get(i));
+                    byte[] decrptedb1 = DERSA(publicKeyB, signb1.get(i));
+                    byte[] decrptedb2 = DERSA(publicKeyB, signb2.get(i));
                     if (new BigInteger(decrptedb1).equals(new BigInteger(msgv.get(i))) && new BigInteger(decrptedb2).equals(new BigInteger(msg1.getBytes()))) {
                         System.out.println("B's sig. verf. success. tid="+array[0]);
                     } else {
@@ -97,10 +107,37 @@ public class Main {
                 for (int i = 0; i < trans.size(); i++) {
                     lists.add(trans.get(i).getTransactionId());
                 }
+                //某个productId某个price的Merkle Tree
                 MerkleTree merkle = MerkleTree.merkleTree(lists);
                 System.out.println("MTRoot=" + new BigInteger(1,merkle.getHash()).toString(16));
+                String acc = new BigInteger(1,merkle.acc()).toString(16);
                 System.out.println("acc="+new BigInteger(1,merkle.acc()).toString(16));
-                FileOutputStream fout = new FileOutputStream("./merkle" +"-"+ trans.get(0).getServiceId() + "-"+trans.get(0).getPrice());
+                String productId=trans.get(0).getServiceId();
+                double price=trans.get(0).getPrice();
+                int number=trans.size();
+
+                String contractAddress = null;
+                if ( Nodes.IfExist(productId)){
+                    contractAddress = ethStorage.deploy();          //Determine whether the product already exists in the database, and if not, create a smart contract
+                } else {
+                    contractAddress = Nodes.getContractAddress(productId);
+                }
+                String txHash = ethStorage.addPriceRoot(contractAddress,acc);       //The root  in Ethereum
+                //node database
+                node node = new node();
+                node.setProductId(productId);
+                node.setPrice(price);
+                node.setContractHash(contractAddress);
+                node.setNumber(number);
+                node.setTransactionHash(txHash);
+                node.setStrIndex(Nodes.getIndex(productId));
+                Nodes.insertNode(node);
+                File file=new File("./merkle/merkle" +"-"+ trans.get(0).getServiceId());
+                if (!file .exists() && !file .isDirectory())
+                {
+                    file .mkdir();
+                }
+                FileOutputStream fout = new FileOutputStream("./merkle/merkle" +"-"+ trans.get(0).getServiceId() + "/"+trans.get(0).getPrice());
                 ObjectOutputStream oos = new ObjectOutputStream(fout);
                 oos.writeObject(merkle);
                 System.out.println("Store Merkle Tree.");
@@ -111,11 +148,12 @@ public class Main {
                 AttestmMsg attestmMsg=(AttestmMsg)object;
                 System.out.println("Proof of membership start.");
                 System.out.println("Read Attestation.");
-                FileInputStream fin = new FileInputStream("./merkle" +"-"+ attestmMsg.getServiceID() +"-"+ attestmMsg.getPrice());
-                ObjectInputStream ois = new ObjectInputStream(fin);
+                FileInputStream fin1 = new FileInputStream("./merkle/merkle" +"-"+ attestmMsg.getServiceID() +"/"+ attestmMsg.getPrice());
+                ObjectInputStream ois = new ObjectInputStream(fin1);
                 MerkleTree merkle = (MerkleTree) ois.readObject();
                 System.out.println("Read Merkle tree from file");
-                ArrayList<SiblingsMsg> siblingsm = merkle.siblings(attestmMsg.getPos());
+                int pos=merkle.findPosition(attestmMsg.getHash());
+                ArrayList<SiblingsMsg> siblingsm = merkle.siblings(pos);
                 ProvemMsg provemMsg=new ProvemMsg(siblingsm);
                 oosManager.writeObject(provemMsg);
                 oosManager.close();
@@ -124,8 +162,8 @@ public class Main {
                 System.out.println("Proof of cardinality start.");
                 System.out.println("Read Attestation.");
                  ArrayList<Integer> rands = attestcMsg.getRands();
-                FileInputStream fin = new FileInputStream("./merkle" +"-"+ attestcMsg.getServiceID() +"-"+ attestcMsg.getPrice());
-                ObjectInputStream ois = new ObjectInputStream(fin);
+                FileInputStream fin1 = new FileInputStream("./merkle/merkle" +"-"+ attestcMsg.getServiceID() +"/"+ attestcMsg.getPrice());
+                ObjectInputStream ois = new ObjectInputStream(fin1);
                 MerkleTree merkle = (MerkleTree) ois.readObject();
                 System.out.println("Read Merkle tree from file.");
                 LastLeaf lastLeaf = merkle.findLastLeaf();

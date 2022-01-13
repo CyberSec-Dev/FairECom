@@ -155,7 +155,7 @@ public class MerkleTree implements Serializable {
 //        int len=path.size();
 //        for(int i=0;i<len;i++) {
 //
-//            //System.out.println("¡¤?????????"+new BigInteger(path.get(i).getHash()).toString());
+
 //        }
 //        //path.get(0).setHash(new byte[1]);
 //        for(int i=len-2;i>-1;i--) {
@@ -200,7 +200,7 @@ public class MerkleTree implements Serializable {
         int len = (int) Math.pow(2, height);
         //System.out.println("len:" + len);
         if (pos >= len) {
-            System.out.println("???????????¦¶");
+
             return null;
         }
         len = len / 2;
@@ -219,7 +219,7 @@ public class MerkleTree implements Serializable {
     }
 
     public ArrayList<SiblingsMsg> siblings(int pos) throws IOException {
-        // System.out.println("???????????¦Ë???" + pos);
+
         MerkleTree merkle = this;
         int height=0;
         while(merkle.getLeft()!=null) {
@@ -230,7 +230,7 @@ public class MerkleTree implements Serializable {
         int len = (int) Math.pow(2, height);
         //System.out.println("len:" + len);
         if (pos >= len) {
-            System.out.println("???????????¦¶");
+
             return null;
         }
         ArrayList<SiblingsMsg> siblings = new ArrayList<SiblingsMsg>();
@@ -240,13 +240,11 @@ public class MerkleTree implements Serializable {
             if (pos < len + position) {
                 SiblingsMsg msg = new SiblingsMsg(merkle.getRight().getHash(), 2);
                 siblings.add(msg);
-                //System.out.println("???¡¤????" + new BigInteger(msg.getHash()).toString());
                 merkle = merkle.getLeft();
             } else {
                 position = position + len;
                 SiblingsMsg msg = new SiblingsMsg(merkle.getLeft().getHash(), 1);
                 siblings.add(msg);
-                //System.out.println("???¡¤????" + new BigInteger(msg.getHash()).toString());
                 merkle = merkle.getRight();
 
             }

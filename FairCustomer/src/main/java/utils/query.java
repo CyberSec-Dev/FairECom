@@ -2,13 +2,14 @@ package utils;
 
 
 import dao.ManagerMapper;
+import dao.NodeMapper;
 import dao.NodesDao;
 import dao.list_orderMapper;
 import msg.Transaction;
 import msg.TransactionSign;
 import org.apache.ibatis.session.SqlSession;
-import pojo.Nodes;
 import pojo.list_order;
+import pojo.node;
 import pojo.t_manager;
 
 import java.util.ArrayList;
@@ -18,27 +19,35 @@ import java.util.Map;
 
 public class query {
     public static String getPriceRoot(String productId, double price) {
-       // long start=System.nanoTime();
+//       // long start=System.nanoTime();
+//        SqlSession session = MybatisUtils.getSession();
+//        NodesDao mapper = session.getMapper(NodesDao.class);
+//        Nodes nodes = mapper.getNodes(productId, price);
+//        String priceroot01 = nodes.getPriceRoot();
+//       // long cost=System.nanoTime()-start;
+//
+//
+//        String address = nodes.getContractHash();
+//        int listNumber = ethStorage.getListNumber(address);
+//        String priceRoot = null;
+//        for (int i = 1; i <= listNumber; i++) {
+//            if (priceroot01.equals(ethStorage.getPrice(address, i))) {
+//                priceRoot = ethStorage.getPrice(address, i);
+//            }
+//        }
+//        if (priceRoot == null) {
+//            return "Ethereum is empty";
+//        } else {
+//            return priceRoot;
+//        }
         SqlSession session = MybatisUtils.getSession();
-        NodesDao mapper = session.getMapper(NodesDao.class);
-        Nodes nodes = mapper.getNodes(productId, price);
-        String priceroot01 = nodes.getPriceRoot();
-       // long cost=System.nanoTime()-start;
-
-
-        String address = nodes.getContractHash();
-        int listNumber = ethStorage.getListNumber(address);
-        String priceRoot = null;
-        for (int i = 1; i <= listNumber; i++) {
-            if (priceroot01.equals(ethStorage.getPrice(address, i))) {
-                priceRoot = ethStorage.getPrice(address, i);
-            }
-        }
-        if (priceRoot == null) {
-            return "Ethereum is empty";
-        } else {
-            return priceRoot;
-        }
+        NodeMapper mapper = session.getMapper(NodeMapper.class);
+        List<node> nodes = new ArrayList<node>();
+        nodes = mapper.getPriceRoot(productId,price);
+        String contractHash = nodes.get(0).getContractHash();
+        int strIndex = nodes.get(0).getStrIndex();
+        session.close();
+        return ethStorage.getPrice(contractHash,strIndex);
     }
 
     public static Map<Double, List<Transaction>> getList_order(String productId) {
@@ -73,10 +82,17 @@ public class query {
         for (list_order list_order : manager) {
            lists.add(list_order.getOrderId());
         }
-
         session.close();
         return lists;
+    }
+    public static list_order getOrder(String orderId){
+        // long start =System.nanoTime();
+        SqlSession session = MybatisUtils.getSession();
+        list_orderMapper Mapper = session.getMapper(list_orderMapper.class);
+       list_order manager = Mapper.getOrder(orderId);
 
+        session.close();
+        return manager;
     }
     public static List<String> getTransactionId(String productId,double price){
         SqlSession session = MybatisUtils.getSession();

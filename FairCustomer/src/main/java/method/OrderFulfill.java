@@ -1,22 +1,24 @@
 package method;
 
+import msg.RSAKey1;
 import msg.SignBankMsg;
 import msg.SignClientMsg;
 import msg.Transaction;
+import utils.Sha256Hash;
 import utils.query;
 
 import javax.crypto.Cipher;
+import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class OrderFulfill {
 
@@ -24,44 +26,28 @@ public class OrderFulfill {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ArrayList<RSAPublicKey> orderFulfill(ObjectOutputStream oosVendor, ObjectInputStream oisVendor) throws Exception {
-		//Transaction tid = new Transaction("t1000", "book", "13700001111", "vendor1", "ChinaBank", 100);
+	public void orderFulfill(ObjectOutputStream oosVendor, ObjectInputStream oisVendor) throws Exception {
+
 		System.out.println("Order-fulfill:create transactions.");
-		//Map<Double, List<Transaction>> map=query.getList_order("154e7e31ebfa092203795c972e5804a6");
-		//List<Transaction> transactions=map.get(23.99);
-		///List<Transaction> transactions=map.get(19.99);
-		//Map<Double, List<Transaction>> map=query.getList_order("aca2eb7d00ea1a7b8ebd4e68314663af");
-		//List<Transaction> transactions=map.get(69.9);
-		//Map<Double, List<Transaction>> map=query.getList_order("437c05a395e9e47f9762e677a7068ce7");
-		//	List<Transaction> transactions=map.get(53.79);
-		//List<Transaction> transactions=map.get(47.65);
-		//List<Transaction> transactions=map.get(53.5);
-		//List<Transaction> transactions=map.get(50.21);
-
-		Map<Double, List<Transaction>> map=query.getList_order("99a4788cb24856965c36a24e339b6058");
-		List<Transaction> transactions=map.get(74.0);
-		//List<Transaction> transactions=map.get(79.9);
-
-		//List<Transaction> transactions=map.get(89.9);
 
 
-		//System.out.println("finish query");
+		ArrayList<Transaction> transactions=new ArrayList<>();
+		System.out.println("Please enter the product id:");
+		Scanner scan=new Scanner(System.in);
+		String productId=scan.next();
+		Random rd = new Random();
+		String s=String.valueOf(rd.nextInt(10000));
+		String tid=new BigInteger(1,hash(s.getBytes())).toString(16).substring(0,30);
+		Transaction transaction=new Transaction(tid,productId,"13011112222","book","ChinaBank",666);
+		transactions.add(transaction);
 
-
-		System.out.println("Transaction number:"+transactions.size());
-		System.out.println("Transcation id:");
-		for(int i=0;i<transactions.size();i++) {
-			transactions.get(i).setclientId("13011112222");
-			System.out.println(i+1+"."+transactions.get(i).getTranctionId());
-		}
-		// System.out.println(tid.toString());
-		// RSA
-		int RSAkeylen = 2048;
-		KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
-		kpg.initialize(RSAkeylen);
-		KeyPair kp = kpg.generateKeyPair();
-		RSAPrivateKey privateKey = (RSAPrivateKey) kp.getPrivate();
-		RSAPublicKey publicKey = (RSAPublicKey) kp.getPublic();
+		FileInputStream fin=new FileInputStream("./RSAKey");
+		ObjectInputStream in=new ObjectInputStream(fin);
+		ArrayList<RSAKey1> keys=(ArrayList<RSAKey1>) in.readObject();
+		RSAPrivateKey privateKey = keys.get(0).getPrivateKey();
+		RSAPublicKey publicKey = keys.get(0).getPublicKey();
+		RSAPublicKey publicKeyBank=keys.get(2).getPublicKey();
+		RSAPublicKey publicKeyVendor=keys.get(1).getPublicKey();
 		ArrayList<byte[]> signC=new ArrayList<>();
 		ArrayList<byte[]> msg=new ArrayList<>();
 		for(int i=0;i<transactions.size();i++) {
@@ -69,7 +55,7 @@ public class OrderFulfill {
 			msg.add(transactions.get(i).toString().getBytes());
 			signC.add(signClient);
 		}
-		SignClientMsg signClientMsg=new SignClientMsg(msg,signC, publicKey);
+		SignClientMsg signClientMsg=new SignClientMsg(msg,signC);
 		oosVendor.writeObject(signClientMsg);
 		oosVendor.flush();
 		System.out.println("C send sig. to V.");
@@ -79,10 +65,10 @@ public class OrderFulfill {
 		ArrayList<byte[]> msg111=signBankMsg.getMsg();
 		ArrayList<byte[]> signB1=signBankMsg.getSignBank1();
 		ArrayList<byte[]> signB2=signBankMsg.getSignBank2();
-		RSAPublicKey publicKeyBank=signBankMsg.getPublicKeyBank();
+		//RSAPublicKey publicKeyBank=signBankMsg.getPublicKeyBank();
 		ArrayList<byte[]> signV1=signBankMsg.getSignVendor1();
 		ArrayList<byte[]> signV2=signBankMsg.getSignVendor2();
-		RSAPublicKey publicKeyVendor=signBankMsg.getPublicKeyVendor();
+		//RSAPublicKey publicKeyVendor=signBankMsg.getPublicKeyVendor();
 		for(int i=0;i<msg111.size();i++) {
 			byte[] msg222 = DERSA(publicKeyBank, signB1.get(i));
 			byte[] msg333 = DERSA(publicKeyBank, signB2.get(i));
@@ -109,10 +95,10 @@ public class OrderFulfill {
 			System.out.println("Order-fulfill fail!");
 		}
 
-		ArrayList<RSAPublicKey> publicKeys=new ArrayList<>();
-		publicKeys.add(signBankMsg.getPublicKeyVendor());
-		publicKeys.add(signBankMsg.getPublicKeyBank());
-		return publicKeys;
+		//ArrayList<RSAPublicKey> publicKeys=new ArrayList<>();
+		//publicKeys.add(signBankMsg.getPublicKeyVendor());
+		//publicKeys.add(signBankMsg.getPublicKeyBank());
+		//return publicKeys;
 
 
 	}
@@ -143,6 +129,11 @@ public class OrderFulfill {
 		Cipher cipher = Cipher.getInstance("RSA");
 		cipher.init(Cipher.DECRYPT_MODE, PUBK);
 		return cipher.doFinal(encrypted);
+	}
+	public static byte[] hash(byte[] data) {
+		Sha256Hash sha256 = new Sha256Hash();
+		byte[] b = sha256.hash(data);
+		return b;
 	}
 
 }

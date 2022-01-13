@@ -1,11 +1,13 @@
 package method;
 
 
+import msg.RSAKey1;
 import msg.SignBankMsg;
 import msg.SignClientMsg;
 import msg.SignVendorMsg;
 
 import javax.crypto.Cipher;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -25,12 +27,13 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) throws Exception {
         System.out.println("Vendor start!");
-        int RSAkeylen = 2048;
-        KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
-        kpg.initialize(RSAkeylen);
-        KeyPair kp = kpg.generateKeyPair();
-        RSAPrivateKey privateKeyV = (RSAPrivateKey) kp.getPrivate();
-        RSAPublicKey publicKeyV = (RSAPublicKey) kp.getPublic();
+        FileInputStream fin=new FileInputStream("./vendorRSAKey");
+        ObjectInputStream in=new ObjectInputStream(fin);
+        ArrayList<RSAKey1> keys=(ArrayList<RSAKey1>) in.readObject();
+        RSAPublicKey publicKeyC=keys.get(0).getPublicKey();
+        RSAPublicKey publicKeyB=keys.get(2).getPublicKey();
+        RSAPublicKey publicKeyV=keys.get(1).getPublicKey();
+        RSAPrivateKey privateKeyV=keys.get(1).getPrivateKey();
         ServerSocket socket=new ServerSocket(8089);
         while(true) {
             Socket s = socket.accept();
@@ -39,7 +42,7 @@ public class Main {
             SignClientMsg signClientMsg = (SignClientMsg) oisClient.readObject();
             ArrayList<byte[]> msgc = signClientMsg.getMsg();
             ArrayList<byte[]> signc = signClientMsg.getSignMsg();
-            RSAPublicKey publicKeyC = signClientMsg.getPublicKey();
+           // RSAPublicKey publicKeyC = signClientMsg.getPublicKey();
             for (int i = 0; i < signc.size(); i++) {
                 byte[] decrypted = DERSA(publicKeyC, signc.get(i));
                 String[] array=new String(msgc.get(i)).split(",");
@@ -60,7 +63,7 @@ public class Main {
                 byte[] sign1 = RSA(privateKeyV, msg1.getBytes());
                 signV2.add(sign1);
             }
-            SignVendorMsg signV = new SignVendorMsg(msgc, signc, publicKeyC, signV1, signV2, publicKeyV);
+            SignVendorMsg signV = new SignVendorMsg(msgc, signc, signV1, signV2);
             Socket socketVendor = new Socket("127.0.0.1", 8086);
             if (socketVendor == null)
                 return;
@@ -84,7 +87,7 @@ public class Main {
                 byte[] sign1 = RSA(privateKeyV, msg1.getBytes());
                 signV22.add(sign1);
             }
-            SignVendorMsg signv = new SignVendorMsg(msgv, signc, publicKeyC, signV11, signV22, publicKeyV);
+            SignVendorMsg signv = new SignVendorMsg(msgv, signc,  signV11, signV22);
             Socket socketBank = new Socket("127.0.0.1", 8087);
             if (socketVendor == null)
                 return;
@@ -95,7 +98,7 @@ public class Main {
             ArrayList<byte[]> msgv1 = signBankMsg.getMsg();
             ArrayList<byte[]> signB1 = signBankMsg.getSignBank1();
             ArrayList<byte[]> signB2 = signBankMsg.getSignBank2();
-            RSAPublicKey publicKeyB = signBankMsg.getPublicKeyBank();
+            //RSAPublicKey publicKeyB = signBankMsg.getPublicKeyBank();
             for (int i = 0; i < msgv1.size(); i++) {
                 byte[] decrypted = DERSA(publicKeyB, signB1.get(i));
                 String[] array = new String(msgv1.get(i)).split(",");

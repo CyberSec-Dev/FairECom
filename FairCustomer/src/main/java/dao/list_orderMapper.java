@@ -9,4 +9,5 @@ import java.util.List;
 public interface list_orderMapper {
    List<list_order> getList_order(@Param("productId") String productId);
    List<list_order> getList(@Param("productId") String productId,@Param("price") double price);
+   list_order getOrder(@Param("orderId") String orderId);
 }
