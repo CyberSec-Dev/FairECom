@@ -40,7 +40,7 @@ We need  four computers to simulate`Customer`, `Vendor`, `Manager` and `Bank` re
 ```java
  <dataSource type="POOLED">
             <property name="driver" value="com.mysql.jdbc.Driver"/>
-            <property name="url" value="jdbc:mysql://localhost:3306/test?          					useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8"/>
+            <property name="url" value="jdbc:mysql://localhost:3306/test?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8"/>
             <property name="username" value="root"/>
             <property name="password" value="123456"/>
         </dataSource>
