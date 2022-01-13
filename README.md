@@ -12,6 +12,9 @@ Our FairECom is implemented by Java, with the built-in random number generator, 
 
 The FairPBB is a project based on Spring Boot, and uses web3j library to provide Ethereum related support. The FairPBB, or ledger, allows a third party (i.e., a manager) to publish compactly  statistical information of customers’ transactions in a privacy-preserving way  and any parties can access it. For each payment item, the PBB publishes the number of transactions and a  digest, i.e., Merkle Tree root, for each price. With the help of the published  information, a customer can attest that he/she had been treated fairly (i.e., with fair price charge/payment) on specific transaction.
 
+We use a real-world public Brazilian e-commercial dataset including orders generously provided by Olist Store. This dataset includes about 100k orders/transactions placed at multiple marketplaces in Brazil from 2016 to 2018. From which, we focus on the Order Items Dataset, which includes the detailed information about the items purchased within
+each order.
+
 ## Environmental requirements
 
 - JDK 1.8+
