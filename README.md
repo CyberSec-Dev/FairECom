@@ -18,7 +18,7 @@ The Manager and Bank store metadata information related to each transaction in a
 
 ####  Dataset
 
-We use the [Brazilian E-Commerce Public Dataset by Olist to test FairECom system](https://www.kaggle.com/olistbr/brazilian-ecommerce/) . This is a Brazilian ecommerce public dataset of orders made at Olist Store.  The dataset has information of 100k orders from 2016 to 2018 made at multiple marketplaces in Brazil.   `Due to the limited amount of ETH in the Ethereum testnet, we only managed to store 16,697 transactions for 813 products.`  You can view these successful transactions in the t_manager table and verify that their prices are fair.  Later we will test all the data in this dataset. 
+We use the [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/olistbr/brazilian-ecommerce/) to test FairECom system. This is a Brazilian ecommerce public dataset of orders made at Olist Store.  The dataset has information of 100k orders from 2016 to 2018 made at multiple marketplaces in Brazil.   `Due to the limited amount of ETH in the Ethereum testnet, we only managed to store 16,697 transactions for 813 products.`  You can view these successful transactions in the t_manager table and verify that their prices are fair.  Later we will test all the data in this dataset. 
 
 ## Environmental Requirements
 
