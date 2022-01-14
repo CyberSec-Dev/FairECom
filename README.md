@@ -48,7 +48,7 @@ We need  four computers to simulate`Customer`, `Vendor`, `Manager` and `Bank` re
             <property name="url" value="jdbc:mysql://localhost:3306/test?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8"/>
             <property name="username" value="root"/>
             <property name="password" value="123456"/>
-        </dataSource>
+ </dataSource>
 ```
 
 
