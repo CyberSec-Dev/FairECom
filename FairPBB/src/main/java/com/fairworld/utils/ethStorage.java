@@ -22,7 +22,7 @@ public class ethStorage {
     private static String url = "https://rinkeby.infura.io/v3/34377eeeb81a4e87932af7b5b84296f1";
     private static Web3j web3j = Web3j.build(new HttpService(url));
     private static String password = "huangran123";
-    private static String source = GetResource.class.getClassLoader().getResource("wallet/UTC--2021-11-09T01-28-25.520Z--a014671b7a14c4da5b09d42668e56b2b9751f1d6").getPath();
+    private static String source = "./src/main/resources/wallet/UTC--2021-11-09T01-28-25.520Z--a014671b7a14c4da5b09d42668e56b2b9751f1d6";
 
     public static String deploy(){
         Credentials credentials  = null;

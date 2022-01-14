@@ -4,6 +4,8 @@ The price discrimination has been empirically exposed where ecommercial platform
 By relying on a newly designed cryptographic accumulator and public bullet board, a system, named as FairECom, is developed, to allow an auditor (i.e., a customer or third-party auditor) to verify if customers are  experiencing price discrimination.
 
 ## Introduction
+We use a real-world public Brazilian ecommercial dataset including orders generously provided by Olist Store. This dataset includes about 100k orders/transactions placed at multiple marketplaces in Brazil from 2016 to 2018. From which, we focus on the Order Items Dataset, which includes the detailed information about the items purchased within each order.  <font color="red">Due to the limited amount of ETH in the Ethereum testnet, we only managed to store 16,697 transactions for 813 products.</font>   You can view these successful transactions in the t_manager table and verify that their prices are fair. 
+
 There are four types of users in the system, namely `Customer`, `Vendor`, `Manager` and `Bank`. Customer, Vendor, Manager and Bank interact to establish transactions, and Customer and Manager interact to verify whether the transaction price is fair. 
 
 Customer, Vendor, and Bank each have a project, which are placed in the `FairCustomer`, `FairVendor`and `FairBank`folders respectively. There are two projects on the Manager side, which are placed in the `FairManager` and `FairPBB`folders. 
@@ -12,8 +14,7 @@ Our FairECom is implemented by Java, with the built-in random number generator, 
 
 The FairPBB is a project based on Spring Boot, and uses web3j library to provide Ethereum related support. The FairPBB, or ledger, allows a third party (i.e., a manager) to publish compactly  statistical information of customers’ transactions in a privacy-preserving way  and any parties can access it. For each payment item, the PBB publishes the number of transactions and a  digest, i.e., Merkle Tree root, for each price. With the help of the published  information, a customer can attest that he/she had been treated fairly (i.e., with fair price charge/payment) on specific transaction.
 
-We use a real-world public Brazilian e-commercial dataset including orders generously provided by Olist Store. This dataset includes about 100k orders/transactions placed at multiple marketplaces in Brazil from 2016 to 2018. From which, we focus on the Order Items Dataset, which includes the detailed information about the items purchased within
-each order.
+
 
 ## Environmental requirements
 
@@ -36,22 +37,22 @@ We need  four computers to simulate`Customer`, `Vendor`, `Manager` and `Bank` re
  Socket socketBank = new Socket("127.0.0.1", 8087);
 ```
 
->Create a new database test in the MYSQL database of `Customer`, `Vendor`, `Manager` and `Bank` respectively. Run list_order.sql, transaction.sql in Customer and Bank respectively. Run node.sql, t_manager.sql in Manager.  The database generation statements at each side are in the corresponding folders.
+>Create a new database 'test' in the MYSQL database of `Customer`, `Vendor`, `Manager` and `Bank` respectively. Run list_order.sql, transaction.sql in Customer and Bank respectively. Run node.sql, t_manager.sql in Manager.  The database generation statements at each side are in the corresponding folders.
 
 >Modify the database related configuration  in `"src\main\resources\mybatis-config"` to correspond to your own database connection. 
 
 ```java
  <dataSource type="POOLED">
-     <property name="driver" value="com.mysql.jdbc.Driver"/>
-     <property name="url" value="jdbc:mysql://localhost:3306/test?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8"/>
-     <property name="username" value="root"/>
-     <property name="password" value="123456"/>
-  </dataSource>
+            <property name="driver" value="com.mysql.jdbc.Driver"/>
+            <property name="url" value="jdbc:mysql://localhost:3306/test?          					useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8"/>
+            <property name="username" value="root"/>
+            <property name="password" value="123456"/>
+        </dataSource>
 ```
 
 
 ## Usage&Result
-Run five projects and run FairCustomer at last. Next, I will show the usage and result of FairCustomer and FairPBB. The  other projects are simple to use and will not be described here. 
+Run five projects (run FairCustomer at last). Next, I will show the usage and result of FairCustomer and FairPBB. The  other projects are simple to use and will not be described here. 
 ### FairPBB
 > Run FairPBB. If the situation of the console is the same as that shown in the figure below, it indicates that the project is running successfully.
 
