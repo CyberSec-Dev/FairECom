@@ -63,7 +63,7 @@ public class Main {
             for(int i=0;i<msgv.size();i++){
                 String[] array1 = new String(msgv.get(i)).split(",");
                 if(query.getTransaction(array1[0])==null){
-                    //query.insertTransaction(new Transaction(array1[0]));
+                    query.insertTransaction(new Transaction(array1[0]));
                 }else{
                     System.out.println("This transaction already exist!");
                 }

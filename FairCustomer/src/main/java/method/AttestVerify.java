@@ -25,7 +25,7 @@ public class AttestVerify {
 		//oos.writeObject(new String("start verification"));
 		//oos.flush();
 		System.out.println("Attest-verify: verify transactions.");
-		FileInputStream fin=new FileInputStream("./RSAKey");
+		FileInputStream fin=new FileInputStream("./customerRSAKey");
 		ObjectInputStream in=new ObjectInputStream(fin);
 		ArrayList<RSAKey1> keys=(ArrayList<RSAKey1>) in.readObject();
 		RSAPublicKey publicKeyBank=keys.get(2).getPublicKey();

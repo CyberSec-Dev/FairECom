@@ -41,7 +41,7 @@ public class OrderFulfill {
 		Transaction transaction=new Transaction(tid,productId,"13011112222","book","ChinaBank",666);
 		transactions.add(transaction);
 
-		FileInputStream fin=new FileInputStream("./RSAKey");
+		FileInputStream fin=new FileInputStream("./customerRSAKey");
 		ObjectInputStream in=new ObjectInputStream(fin);
 		ArrayList<RSAKey1> keys=(ArrayList<RSAKey1>) in.readObject();
 		RSAPrivateKey privateKey = keys.get(0).getPrivateKey();
