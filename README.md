@@ -4,7 +4,7 @@ The price discrimination has been empirically exposed where ecommercial platform
 By relying on a newly designed cryptographic accumulator and public bullet board, a system, named as FairECom, is developed, to allow an auditor (i.e., a customer or third-party auditor) to verify if customers are  experiencing price discrimination.
 
 ## Introduction
-We use a real-world public Brazilian ecommercial dataset including orders generously provided by Olist Store. This dataset includes about 100k orders/transactions placed at multiple marketplaces in Brazil from 2016 to 2018. From which, we focus on the Order Items Dataset, which includes the detailed information about the items purchased within each order.  <font color="red">Due to the limited amount of ETH in the Ethereum testnet, we only managed to store 16,697 transactions for 813 products.</font>   You can view these successful transactions in the t_manager table and verify that their prices are fair. 
+We use a real-world public Brazilian ecommercial dataset including orders generously provided by Olist Store. This dataset includes about 100k orders/transactions placed at multiple marketplaces in Brazil from 2016 to 2018. From which, we focus on the Order Items Dataset, which includes the detailed information about the items purchased within each order.   $\color{red}{Due to the limited amount of ETH in the Ethereum testnet, we only managed to store 16,697 transactions for 813 products.}$   You can view these successful transactions in the t_manager table and verify that their prices are fair. 
 
 There are four types of users in the system, namely `Customer`, `Vendor`, `Manager` and `Bank`. Customer, Vendor, Manager and Bank interact to establish transactions, and Customer and Manager interact to verify whether the transaction price is fair. 
 
@@ -18,11 +18,12 @@ The FairPBB is a project based on Spring Boot, and uses web3j library to provide
 
 ## Environmental requirements
 
-- JDK 1.8+
-- Maven 3.3+
-- web3j
+- JDK 1.8
+- okhttp3 4.3.1
+- web3j 5.0.0
+
 - Spring Boot 2.5.6
-- mysql 5.7
+- mysql 8.0.26
 - Intellij IDEA
 
 ## Install&Configure 
@@ -44,7 +45,7 @@ We need  four computers to simulate`Customer`, `Vendor`, `Manager` and `Bank` re
 ```java
  <dataSource type="POOLED">
             <property name="driver" value="com.mysql.jdbc.Driver"/>
-            <property name="url" value="jdbc:mysql://localhost:3306/test?          					useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8"/>
+            <property name="url" value="jdbc:mysql://localhost:3306/test?   useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8"/>
             <property name="username" value="root"/>
             <property name="password" value="123456"/>
         </dataSource>
@@ -56,23 +57,47 @@ Run five projects (run FairCustomer at last). Next, I will show the usage and re
 ### FairPBB
 > Run FairPBB. If the situation of the console is the same as that shown in the figure below, it indicates that the project is running successfully.
 
-![Schematic diagram of successful operation ](./image/fig1.png "Schematic diagram of successful operation ")
+![Schematic diagram of successful operation ](./image/fig1.png )
 
 > After the project runs successfully, access  http://localhost:8081/  you can access the project locally.
 >
 > After accessing the project, the home page information is as shown in the figure below. Enter the product_id you want to query in the input box to query the information about changing the product.
 
-![Schematic diagram of viewing product ](./image/fig2.png "Schematic diagram of viewing product ")
+![Schematic diagram of viewing product ](./image/fig2.png )
 
 > We take a product in an experimental dataset as an example. In the sidebar of the page, we can clearly see the five properties of the product. 
 
-![Schematic diagram of product detail ](./image/fig3.png "Schematic diagram of product detail ")
+![Schematic diagram of product detail ](./image/fig3.png )
 
 > The *Product ID* represents the ID of the product and uniquely identifies a product in the entire dataset. The *Total No. Of Trans.* represents the total number of transactions for this product in a time epoch. The *Price Quantity* denotes the number of different prices for this product during this time epoch. The *Merkle Tree Root* represents the root hash of a Merkel tree whose leaf node value is composed of the Merkle root hash of each price. We have created a smart contract for each product to manage, and The *Contract Address* represents the address of the smart contract. In the table,  we show the relevant information of five different prices of this product in this time epoch. We can see the number of transactions and a digest, for example, *HASH OF MTROOT*, for each price. *HASH OF MTROOT*  is a root hash of a Merkle tree composed of all transactions under this price. We call the function of the smart contract of this product and store the hash value on Ethereum (rinkeby test network). As shown in the table, *TXN HASH* represents the Ethereum transaction hash generated in the stored procedure.
 
+> Click the value of *HASH OF MTROOT* to get all relevant transactions.
+
+![Schematic diagram of transactions detail ](./image/fig4.png )
+
 > Relevant information about Ethereum storage can also be verified in https://rinkeby.etherscan.io/
 
-![Schematic diagram of  Ethereum](./image/fig4.png "Schematic diagram of  Ethereum ")
+![Schematic diagram of  Ethereum](./image/fig5.png )
+
+> After entering the hash of a transaction, you will get the details of the transaction. 
+
+![Schematic diagram of Ethereum](./image/fig6.png)
+
+> Click to see More
+
+![Schematic diagram of Ethereum](./image/fig7.png)
+
+> For *Input Data*, we also need to decode it. Click the *decode input data* button under *Input Data* to complete the decoding operation. After decoding, you can clearly see that we called the method of smart contract and stored a value of type string *HASH OF MTROOT* in Ethereum.
+
+![Schematic diagram of Ethereum](./image/fig8.png)
+
+> Similarly, we can also query the smart contract address of the product to obtain all interactions with the smart contract, that is, all the information we store on the blockchain for the product. At that time, we can see all transactions under the smart contract. Through the hash value of these transactions, we can still repeat the operation in the previous paragraph. A transaction represents that we have stored a hash value to Ethereum, but note that the number of transactions under a smart contract is more than that shown in PBB. The extra transaction is created the earliest, which represents the creation process of a smart contract.
+
+![Schematic diagram of Ethereum](./image/fig9.png)
+
+> As shown in the figure, this product has six different prices, so we need to write six different *MTROOT*, and the first transaction represents the creation of a smart contract.
+
+
 ### FairCustomer
 
 ```
@@ -128,6 +153,3 @@ Open Node verf. success
 Open Node verf. success
 Cardinality verification success.
 ```
-
-
-
