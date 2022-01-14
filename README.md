@@ -1,5 +1,5 @@
 # FairECom
-[![ ](./9Ethereum.png)](https://www.mageworx.com/blog/build-customer-loyalty)
+[![Schematic diagram of successful operation ](./image/1pbbRunSuccess.png )](https://www.mageworx.com/blog/build-customer-loyalty)
 Although various solutions based on Web search or P2P schemes have been designed to discover or prevent e-commerce price discrimination, their efficiency and effectiveness are big concerns. The design of a system that can securely and efficiently prove e-commerce fairness against price discrimination in a privacy-preserving way remains open and challenging.
 
 FairECom targets providing a new centralized solution to solve the disadvantages of the existing schemes. FairECom provides a number of nice features, such as security, accuracy, efficiency, public verifiability, and identity privacy.
