@@ -1,7 +1,7 @@
 spring:
   datasource:
     username: root
-    password: 991127
+    password: 123456
     url: jdbc:mysql://localhost:3306/test?useSSL=true&characterEncoding=UTF-8&userUnicode=true
     driver-class-name: com.mysql.jdbc.Driver
   thymeleaf:
@@ -11,7 +11,7 @@ spring:
     suffix: .html
     encoding: utf-8
     mode: HTML
-  #这个是关键，放开springboot对静态资源的拦截
+
   mvc:
     static-path-pattern: /static/**
 

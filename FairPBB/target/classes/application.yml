@@ -11,7 +11,7 @@ spring:
     suffix: .html
     encoding: utf-8
     mode: HTML
-  #这个是关键，放开springboot对静态资源的拦截
+
   mvc:
     static-path-pattern: /static/**
 
