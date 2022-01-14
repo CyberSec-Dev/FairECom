@@ -1,7 +1,7 @@
 # FairECom
-E-commerce platforms have price discrimination. The FairECom system is designed to prevent price discrimination. 
+Although various solutions based on Web search or P2P schemes have been designed to discover or prevent e-commerce price discrimination, their efficiency and effectiveness are big concerns. The design of a system that can securely and efficiently prove e-commerce fairness against price discrimination in a privacy-preserving way remains open and challenging.
 
-Most of the existing solutions are based on web search, but their efficiency has great problems. FairECom is a centralized challenge-response system based on cryptographic accumulator and public bullet board. The system is reliable, accurate and has good performance.
+FairECom targets providing a new centralized solution to solve the disadvantages of the existing schemes. FairECom provides a number of nice features, such as security, accuracy, efficiency, public verifiability, and identity privacy.
 
 ## Introduction
 ####  System Model
