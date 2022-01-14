@@ -10,7 +10,7 @@ There are four types of users in the system, namely `Customer`, `Vendor`, `Manag
 Customer, Vendor, and Bank each have a project, which are placed in the `FairCustomer`, `FairVendor`and `FairBank`folders respectively. There are two projects on the Manager side, which are placed in the `FairManager` and `FairPBB`folders. 
 
 ####  Technology 
-The FairPBB is a project based on Spring Boot, and uses web3j library to provide Ethereum related support.
+The FairPBB is a project based on [Spring Boot](https://spring.io/projects/spring-boot/) , and uses [web3j](http://web3j.io/) library to provide Ethereum related support.
 
 `FairCustomer`, `FairVendor`,`FairBank` and `FairManager`use  Java's built-in cryptography tools(i.e., SHA, RSA) and  use socket to realize the communication of four users. 
 
