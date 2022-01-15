@@ -36,7 +36,7 @@ We use the [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com
 We need  four computers to simulate`Customer`, `Vendor`, `Manager` and `Bank` respectively.
 >Download the `FairCustomer`, `FairVendor` and `FairBank` folders respectively in Customer, Vendor, and Bank. Download `FairManager` and `FairPBB`folders in Manager.
 
->Modify the `ip address` and `The port number `of the socket connection in the 'src\main\java\method\Main' of FairCustomer, FairVendor, FairManager and FairBank. As shown below, take FairCustomer as an example.  ( If you deploy on one computer, you don't need to do this step).
+>Modify the `ip address` and `the port number `of the socket connection in the 'src\main\java\method\Main' of FairCustomer, FairVendor, FairManager and FairBank. As shown below, take FairCustomer as an example.  ( If you deploy on one computer, you don't need to do this step).
 
 
 ```java
