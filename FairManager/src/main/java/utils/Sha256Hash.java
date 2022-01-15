@@ -28,17 +28,7 @@ public class Sha256Hash {
         return DIGEST.digest();
     }
 
-    /*public static synchronized byte[] hash(String data){
-        return hash(data.getBytes(UTF_8));
-    }*/
-    /**
-	 * SHA-256
-	 * 
-	 * @param filepath
-	 * @return
-	 * @throws NoSuchAlgorithmException
-	 * @throws IOException
-	 */
+
 	public static byte[] hash(String filepath) throws NoSuchAlgorithmException, IOException {
 		int buff = 128;
 		// 16384

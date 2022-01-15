@@ -2,11 +2,6 @@ package msg;
 
 import java.io.Serializable;
 
-/**
- * Abstract class for all message-types.
- * @author Thomas Grafenauer (tgrafena@edu.uni-klu.ac.at)
- * @author Martin Fillafer (mfillafe@edu.uni-klu.ac.at)
- */
 public abstract class Message implements Serializable {
 
     private static final long serialVersionUID = 7255290532066692850L;

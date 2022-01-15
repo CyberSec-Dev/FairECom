@@ -65,10 +65,8 @@ public class OrderFulfill {
 		ArrayList<byte[]> msg111=signBankMsg.getMsg();
 		ArrayList<byte[]> signB1=signBankMsg.getSignBank1();
 		ArrayList<byte[]> signB2=signBankMsg.getSignBank2();
-		//RSAPublicKey publicKeyBank=signBankMsg.getPublicKeyBank();
 		ArrayList<byte[]> signV1=signBankMsg.getSignVendor1();
 		ArrayList<byte[]> signV2=signBankMsg.getSignVendor2();
-		//RSAPublicKey publicKeyVendor=signBankMsg.getPublicKeyVendor();
 		for(int i=0;i<msg111.size();i++) {
 			byte[] msg222 = DERSA(publicKeyBank, signB1.get(i));
 			byte[] msg333 = DERSA(publicKeyBank, signB2.get(i));

@@ -1,23 +1,16 @@
 package method;
 
-
 import msg.RSAKey1;
 import msg.SignBankMsg;
 import msg.SignClientMsg;
 import msg.SignVendorMsg;
-
 import javax.crypto.Cipher;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPrivateKey;
@@ -47,7 +40,6 @@ public class Main {
             SignClientMsg signClientMsg = (SignClientMsg) oisClient.readObject();
             ArrayList<byte[]> msgc = signClientMsg.getMsg();
             ArrayList<byte[]> signc = signClientMsg.getSignMsg();
-           // RSAPublicKey publicKeyC = signClientMsg.getPublicKey();
             for (int i = 0; i < signc.size(); i++) {
                 byte[] decrypted = DERSA(publicKeyC, signc.get(i));
                 String[] array=new String(msgc.get(i)).split(",");

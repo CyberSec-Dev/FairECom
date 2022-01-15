@@ -5,9 +5,6 @@ import java.util.ArrayList;
 
 public class SignBankMsg extends Message {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 236835547091180416L;
     private ArrayList<byte[]> msg;
     private ArrayList<byte[]> signClient;

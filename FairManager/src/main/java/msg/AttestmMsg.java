@@ -1,15 +1,11 @@
 package msg;
 
 public class AttestmMsg extends Message{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -623522065819852026L;
-	//private int pos;
 	private byte[] hash;
 	private String serviceID;
 	private double price;
-	//private ArrayList<Integer> rands;
 
 	public AttestmMsg(byte[] hash, String serviceID, double price) {
 		this.hash = hash;

@@ -29,9 +29,7 @@ public class Sha256Hash {
         return DIGEST.digest();
     }
 
-    /*public static synchronized byte[] hash(String data){
-        return hash(data.getBytes(UTF_8));
-    }*/
+
     /**
 	 * SHA-256
 	 * 

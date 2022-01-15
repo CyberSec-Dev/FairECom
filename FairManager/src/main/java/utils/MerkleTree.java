@@ -56,7 +56,6 @@ public class MerkleTree implements Serializable {
 
     public MerkleTree(byte[] hash) {
         this.hash = hash;
-        //this.data = data;
     }
 
     public MerkleTree() {
@@ -71,9 +70,7 @@ public class MerkleTree implements Serializable {
         Sha256Hash sha256 = new Sha256Hash();
         ArrayList<MerkleTree> trees = new ArrayList<>();
         int listLen = list.size();
-      //  int a = (int) Math.sqrt(listLen) + 1;
         double a=Math.log(listLen)/Math.log(2);
-       // int len = (int) Math.pow(2, a);
         int len=0;
         int b=(int)a;
         if(b==a){
@@ -104,15 +101,10 @@ public class MerkleTree implements Serializable {
                 node.left = trees.get(i);
                 node.right = trees.get(next);
                 node.hash = hash(node.left.hash, node.right.hash);
-                //System.out.print(new BigInteger(node.left.hash).toString() + "   ");
-                //System.out.print(new BigInteger(node.right.hash).toString() + "   ");
-//                System.out.print(new BigInteger(node.hash).toString() + "   ");
                 trees.set(i / 2, node);
             }
             len = (len + 1) / 2;
-            //height++;
         }
-        //trees.get(0).data = Integer.toString(height).getBytes();
         return trees.get(0);
     }
 
@@ -123,70 +115,10 @@ public class MerkleTree implements Serializable {
         combineTree.left = newtree;
         combineTree.right = merkle;
         combineTree.hash = hash(combineTree.left.hash, combineTree.right.hash);
-        //int height = Integer.parseInt(new String(merkle.getData())) + 1;
-        //combineTree.data = Integer.toString(height).getBytes();
         return combineTree;
     }
 
-//    public int  addLeaf(byte[] newLeaf) throws IOException {
-//        MerkleTree merkle = this;
-//        merkle.setHash(new byte[1]);
-//        //int height = Integer.parseInt(new String(merkle.getData()));
-////		for (int i = 0; i < height; i++) {
-////			merkle = merkle.getLeft();
-////		}
-//        while(merkle.getLeft()!=null) {
-//            merkle = merkle.getLeft();
-//        }
-//        int pos = 0;
-//        int j = 1;
-//        while (merkle != null) {
-//            if (new BigInteger(merkle.getRight().getHash()).equals(new BigInteger(hash(Integer.toString(j).getBytes())))) {
-//                //merkle.getRight().setData(newLeaf);
-//                merkle.getRight().setHash(hash(newLeaf));
-//                break;
-//            }
-//            merkle = merkle.getRight();
-//            pos++;
-//            j++;
-//
-//        }
-//        ArrayList<MerkleTree> path=getPath(pos+1);
-//        int len=path.size();
-//        for(int i=0;i<len;i++) {
-//
 
-//        }
-//        //path.get(0).setHash(new byte[1]);
-//        for(int i=len-2;i>-1;i--) {
-//            path.get(i).setHash(hash(path.get(i).getLeft().getHash(),path.get(i).getRight().getHash()));
-//
-//        }
-//        return pos+1;
-//
-//    }
-
-//	public byte[] generateRootbysiblings(ArrayList<MerkleTree> provem, String userId) {
-//		byte[] rootHash = hash(userId.getBytes());
-//		int siblingslen = provem.size() - 1;
-//		for (int i = siblingslen - 1; i > -1; i--) {
-//			if (new String(provem.get(i).getData()).equals("1")) {
-//				rootHash = hash(provem.get(i).getHash(), rootHash);
-//			} else {
-//				rootHash = hash(rootHash, provem.get(i).getHash());
-//			}
-//		}
-//		return rootHash;
-//
-//	}
-
-//    public ProvemMsg proveM(byte[] userIdhash) throws IOException {
-//        MerkleTree merkle = this;
-//        int pos = merkle.findPosition(userIdhash);
-//        ArrayList<SiblingsMsg> siblings = merkle.siblings(pos);
-//        ProvemMsg provemMsg = new ProvemMsg(siblings, merkle.getHash());
-//        return provemMsg;
-//    }
 
     public byte[] findLeaf(int pos) {
 
@@ -214,7 +146,6 @@ public class MerkleTree implements Serializable {
             }
             len = len / 2;
         }
-        //System.out.println("??????????" + new String(merkle.getData()));
         return merkle.getHash();
     }
 
@@ -254,7 +185,6 @@ public class MerkleTree implements Serializable {
         return siblings;
     }
     public ArrayList<MerkleTree> getPath(int pos) throws IOException {
-        // System.out.println("???????????¦Ë???" + pos);
         MerkleTree merkle = this;
         int height=0;
         while(merkle.getLeft()!=null) {
@@ -265,7 +195,6 @@ public class MerkleTree implements Serializable {
         int len = (int) Math.pow(2, height);
         //System.out.println("len:" + len);
         if (pos >= len) {
-            System.out.println("???????????¦¶");
             return null;
         }
 
@@ -275,7 +204,6 @@ public class MerkleTree implements Serializable {
         int position = 0;
         len = len / 2;
         while (len > 0) {
-            //System.out.println("lalala:"+len);
             if (pos < len + position) {
                 path.add(merkle.getLeft());
                 merkle = merkle.getLeft();
@@ -339,8 +267,6 @@ public class MerkleTree implements Serializable {
     }
 
     public byte[] acc() {
-        //System.out.println("acchash:" + new BigInteger(this.hash));
-        //System.out.println(new BigInteger(this.data));
         MerkleTree merkle = this;
         int height=0;
         while(merkle.getLeft()!=null) {

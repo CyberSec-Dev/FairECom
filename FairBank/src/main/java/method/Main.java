@@ -4,7 +4,6 @@ import msg.RSAKey1;
 import msg.SignBankMsg;
 import msg.SignVendorMsg;
 import pojo.Transaction;
-
 import javax.crypto.Cipher;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
@@ -36,10 +35,8 @@ public class Main {
             SignVendorMsg signVendorMsg = (SignVendorMsg) oisVendor.readObject();
             ArrayList<byte[]> msgv = signVendorMsg.getMsg();
             ArrayList<byte[]> signc = signVendorMsg.getSignClient();
-          //  RSAPublicKey publicKeyC = signVendorMsg.getPublicKeyClient();
             ArrayList<byte[]> signv1 = signVendorMsg.getSignVendor1();
             ArrayList<byte[]> signv2 = signVendorMsg.getSignVendor2();
-            //RSAPublicKey publicKeyV = signVendorMsg.getPublicKeyVendor();
             for (int i = 0; i < signc.size(); i++) {
                 String[] array = new String(msgv.get(i)).split(",");
                 String msg1 = array[0] + "," + array[1] + "," + array[2] + "," + array[3] + "," + array[4] + "," + array[5];
@@ -51,7 +48,6 @@ public class Main {
                 }
                 byte[] decrptedv1 = DERSA(publicKeyV, signv1.get(i));
                 byte[] decrptedv2 = DERSA(publicKeyV, signv2.get(i));
-                //String[] array1 = new String(msgv.get(i)).split(",");
                 String msg11 = array[0] + "," + array[1] + "," + array[3] + "," + array[4] + "," + array[5] + "," + array[6];
                 if (new BigInteger(decrptedv1).equals(new BigInteger(msgv.get(i))) && new BigInteger(decrptedv2).equals(new BigInteger(msg11.getBytes()))) {
                     System.out.println("V's sig. verf. success. tid="+array[0]);

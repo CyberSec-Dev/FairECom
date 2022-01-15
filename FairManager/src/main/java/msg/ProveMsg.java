@@ -4,36 +4,24 @@ import java.util.ArrayList;
 
 public class ProveMsg extends Message {
 
-	/**
-	 *
-	 */
+
 	private static final long serialVersionUID = 8652062226350919071L;
-	//private  ArrayList<SiblingsMsg> siblingsm;
 	private int size;
 	private byte[] lastLeaf;
 	private ArrayList<byte[]> randLeaves;
 	private ArrayList<SiblingsMsg> siblings;
 	private ArrayList<ArrayList<SiblingsMsg>> randLeavesSiblings;
-	//private byte[] rootHash;
 	private ArrayList<TransactionSign> transactionRand;
 	public ProveMsg(int size, byte[] lastLeaf, ArrayList<SiblingsMsg> siblings, ArrayList<byte[]> randLeaves, ArrayList<ArrayList<SiblingsMsg>> randLeavesSiblings, ArrayList<TransactionSign> transactionRand) {
-		//this.siblingsm=siblingsm;
 		this.size=size;
 		this.lastLeaf=lastLeaf;
 		this.siblings=siblings;
 		this.randLeavesSiblings=randLeavesSiblings;
 		this.randLeaves=randLeaves;
-		//this.rootHash=rootHash;
 		this.transactionRand=transactionRand;
 	}
 
-//	public ArrayList<SiblingsMsg> getSiblingsm() {
-//		return siblingsm;
-//	}
-//
-//	public void setSiblingsm(ArrayList<SiblingsMsg> siblingsm) {
-//		this.siblingsm = siblingsm;
-//	}
+
 
 	public int getSize() {
 		return size;

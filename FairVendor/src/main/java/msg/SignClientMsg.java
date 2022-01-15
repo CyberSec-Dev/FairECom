@@ -5,15 +5,10 @@ import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 
 public class SignClientMsg extends Message {
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 7714433424201752143L;
-
 
 	private ArrayList<byte[]> msg;
 	private ArrayList<byte[]> signMsg;
-	//private RSAPublicKey publicKey;
 
 	public SignClientMsg(ArrayList<byte[]> msg, ArrayList<byte[]> signMsg) {
 		this.msg = msg;

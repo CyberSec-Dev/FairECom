@@ -4,8 +4,6 @@ import dao.BankMapper;
 import org.apache.ibatis.session.SqlSession;
 import pojo.Transaction;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class query {
     public static Transaction getTransaction(String transactionId){

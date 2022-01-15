@@ -1,16 +1,13 @@
 package msg;
 
-import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 
 public class SignVendorMsg extends Message {
     private static final long serialVersionUID = 6455375473616086653L;
     private ArrayList<byte[]> msg;
     private ArrayList<byte[]> signClient;
-    // private RSAPublicKey publicKeyClient;
     private ArrayList<byte[]> signVendor1;
     private ArrayList<byte[]> signVendor2;
-    //private RSAPublicKey publicKeyVendor;
 
     public SignVendorMsg(ArrayList<byte[]> msg, ArrayList<byte[]> signClient, ArrayList<byte[]> signVendor1, ArrayList<byte[]> signVendor2) {
         this.msg = msg;

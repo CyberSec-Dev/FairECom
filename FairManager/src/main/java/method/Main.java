@@ -35,19 +35,15 @@ public class Main {
         while(true) {
 
         Socket s=socket.accept();
-           // System.out.println("accept");
         ObjectOutputStream oosManager = new ObjectOutputStream(s.getOutputStream());
         ObjectInputStream oisManager= new ObjectInputStream(s.getInputStream());
             Object object = oisManager.readObject();
             if (object instanceof SignVendorMsg) {
                 SignVendorMsg signVendorMsg = (SignVendorMsg) object;
-                //SignVendorMsg signVendorMsg=(SignVendorMsg) oisManager.readObject();
                 ArrayList<byte[]> msgc = signVendorMsg.getMsg();
                 ArrayList<byte[]> signc = signVendorMsg.getSignClient();
-               // RSAPublicKey publicKeyC = signVendorMsg.getPublicKeyClient();
                 ArrayList<byte[]> signv1 = signVendorMsg.getSignVendor1();
                 ArrayList<byte[]> signv2 = signVendorMsg.getSignVendor2();
-               // RSAPublicKey publicKeyV = signVendorMsg.getPublicKeyVendor();
                 for (int i = 0; i < signc.size(); i++) {
                     byte[] decrypted = DERSA(publicKeyC, signc.get(i));
                     String[] array=new String(msgc.get(i)).split(",");
@@ -58,7 +54,6 @@ public class Main {
                     }
                     byte[] decrptedv1 = DERSA(publicKeyV, signv1.get(i));
                     byte[] decrptedv2 = DERSA(publicKeyV, signv2.get(i));
-                   // String[] array = new String(msgc.get(i)).split(",");
                     String msg1 = array[0] + "," + array[1] + "," + array[3] + "," + array[4] + "," + array[5];
                     if (new BigInteger(decrptedv1).equals(new BigInteger(msgc.get(i))) && new BigInteger(decrptedv2).equals(new BigInteger(msg1.getBytes()))) {
                         System.out.println("V's sig. verf. success. tid="+array[0]);
@@ -75,10 +70,8 @@ public class Main {
                 ArrayList<byte[]> msgv = signBankMsg.getMsg();
                 ArrayList<byte[]> signv11 = signBankMsg.getSignVendor1();
                 ArrayList<byte[]> signv21 = signBankMsg.getSignVendor2();
-               // RSAPublicKey publicKeyV1 = signBankMsg.getPublicKeyVendor();
                 ArrayList<byte[]> signb1 = signBankMsg.getSignBank1();
                 ArrayList<byte[]> signb2 = signBankMsg.getSignBank2();
-                //RSAPublicKey publicKeyb = signBankMsg.getPublicKeyBank();
                 for (int i = 0; i < msgv.size(); i++) {
                     String[] array = new String(msgv.get(i)).split(",");
                     String msg1 = array[0] + "," + array[1] + "," + array[3] + "," + array[4] + "," + array[5] + "," + array[6];
@@ -108,7 +101,6 @@ public class Main {
                 for (int i = 0; i < trans.size(); i++) {
                     lists.add(trans.get(i).getTransactionId());
                 }
-                //某个productId某个price的Merkle Tree
                 MerkleTree merkle = MerkleTree.merkleTree(lists);
                 System.out.println("MTRoot=" + new BigInteger(1,merkle.getHash()).toString(16));
                 String acc = new BigInteger(1,merkle.acc()).toString(16);
@@ -143,9 +135,7 @@ public class Main {
                 oos.writeObject(merkle);
                 System.out.println("Store Merkle Tree.");
             } else if(object instanceof AttestmMsg){
-               // String a = (String) object;
-               // System.out.println(a);
-               // AttestmMsg attestmMsg = (AttestmMsg) oisManager.readObject();
+
                 AttestmMsg attestmMsg=(AttestmMsg)object;
                 System.out.println("Proof of membership start.");
                 System.out.println("Read Attestation.");

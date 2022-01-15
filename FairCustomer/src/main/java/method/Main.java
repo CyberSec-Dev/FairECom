@@ -19,7 +19,7 @@ public class Main {
           String managerIp="127.0.0.1";
           int managerPort=8086;
           while(true){
-              System.out.println("Please enter an action to perform ：1.Create transactions.  2.Verify transactions.  3.Quit" );
+              System.out.println("Please enter an action to perform: 1.Create transactions.  2.Verify transactions.  3.Quit" );
               Scanner scan =new Scanner(System.in);
               String s=scan.next();
               if(s.equals("1")) {
