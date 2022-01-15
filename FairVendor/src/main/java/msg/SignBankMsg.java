@@ -11,13 +11,11 @@ public class SignBankMsg extends Message {
     private static final long serialVersionUID = 236835547091180416L;
     private ArrayList<byte[]> msg;
     private ArrayList<byte[]> signClient;
-    //private RSAPublicKey publicKeyClient;
     private ArrayList<byte[]> signVendor1;
     private ArrayList<byte[]> signVendor2;
-    //private RSAPublicKey publicKeyVendor;
     private ArrayList<byte[]> signBank1;
     private ArrayList<byte[]> signBank2;
-    //private RSAPublicKey publicKeyBank;
+    
 
     public SignBankMsg(ArrayList<byte[]> msg, ArrayList<byte[]> signClient, ArrayList<byte[]> signVendor1, ArrayList<byte[]> signVendor2, ArrayList<byte[]> signBank1, ArrayList<byte[]> signBank2) {
         this.msg = msg;

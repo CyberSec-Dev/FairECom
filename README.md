@@ -1,5 +1,5 @@
 # FairECom
-[![ ](./image/logo.png)](https://www.mageworx.com/blog/build-customer-loyalty)
+[![ ](./image/0logo.png)](https://www.mageworx.com/blog/build-customer-loyalty)
 
 Although various solutions based on Web search or P2P schemes have been designed to discover or prevent e-commerce price discrimination, their efficiency and effectiveness are big concerns. The design of a system that can securely and efficiently prove e-commerce fairness against price discrimination in a privacy-preserving way remains open and challenging.
 
@@ -36,7 +36,7 @@ We use the [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com
 We need  four computers to simulate`Customer`, `Vendor`, `Manager` and `Bank` respectively.
 >Download the `FairCustomer`, `FairVendor` and `FairBank` folders respectively in Customer, Vendor, and Bank. Download `FairManager` and `FairPBB`folders in Manager.
 
->Modify the `ip address` and `The port number `of the socket connection in the 'src\main\java\method\Main' of FairCustomer, FairVendor, FairManager and FairBank. As shown below, take FairCustomer as an example.  ( If you deploy on one computer, you don't need to do this step).
+>Modify the `ip address` and `the port number `of the socket connection in the 'src\main\java\method\Main' of FairCustomer, FairVendor, FairManager and FairBank. As shown below, take FairCustomer as an example.  ( If you deploy on one computer, you don't need to do this step).
 
 
 ```java

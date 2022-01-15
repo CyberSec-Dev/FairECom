@@ -67,7 +67,6 @@ public class Main {
                     System.out.println("This transaction already exist!");
                 }
             }
-
             ArrayList<byte[]> signB1 = new ArrayList<>();
             ArrayList<byte[]> signB2 = new ArrayList<>();
             for (int i = 0; i < msgv.size(); i++) {
