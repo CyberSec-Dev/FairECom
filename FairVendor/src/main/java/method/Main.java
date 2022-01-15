@@ -27,6 +27,11 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) throws Exception {
         System.out.println("Vendor start!");
+        int vendorPort=8089;
+        String managerIp="127.0.0.1";
+        int managerPort=8086;
+        String bankIp="127.0.0.1";
+        int bankPort=8087;
         FileInputStream fin=new FileInputStream("./vendorRSAKey");
         ObjectInputStream in=new ObjectInputStream(fin);
         ArrayList<RSAKey1> keys=(ArrayList<RSAKey1>) in.readObject();
@@ -34,7 +39,7 @@ public class Main {
         RSAPublicKey publicKeyB=keys.get(2).getPublicKey();
         RSAPublicKey publicKeyV=keys.get(1).getPublicKey();
         RSAPrivateKey privateKeyV=keys.get(1).getPrivateKey();
-        ServerSocket socket=new ServerSocket(8089);
+        ServerSocket socket=new ServerSocket(vendorPort);
         while(true) {
             Socket s = socket.accept();
             ObjectOutputStream oosClient = new ObjectOutputStream(s.getOutputStream());
@@ -64,7 +69,7 @@ public class Main {
                 signV2.add(sign1);
             }
             SignVendorMsg signV = new SignVendorMsg(msgc, signc, signV1, signV2);
-            Socket socketVendor = new Socket("127.0.0.1", 8086);
+            Socket socketVendor = new Socket(managerIp, managerPort);
             if (socketVendor == null)
                 return;
             ObjectOutputStream oosManager = new ObjectOutputStream(socketVendor.getOutputStream());
@@ -88,7 +93,7 @@ public class Main {
                 signV22.add(sign1);
             }
             SignVendorMsg signv = new SignVendorMsg(msgv, signc,  signV11, signV22);
-            Socket socketBank = new Socket("127.0.0.1", 8087);
+            Socket socketBank = new Socket(bankIp, bankPort);
             if (socketVendor == null)
                 return;
             ObjectOutputStream oosBank = new ObjectOutputStream(socketBank.getOutputStream());

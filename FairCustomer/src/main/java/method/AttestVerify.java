@@ -20,7 +20,7 @@ public class AttestVerify {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void attestVerify()
+	public void attestVerify(String managerIp,int managerPort)
 			throws Exception {
 		//oos.writeObject(new String("start verification"));
 		//oos.flush();
@@ -43,7 +43,7 @@ public class AttestVerify {
 			}
 
 			if(str1.equals("1")) {
-				Socket socketManager = new Socket("127.0.0.1", 8086);
+				Socket socketManager = new Socket(managerIp, managerPort);
 				if (socketManager == null)
 					return;
 				ObjectOutputStream oos= new ObjectOutputStream(socketManager.getOutputStream());
@@ -89,7 +89,7 @@ public class AttestVerify {
 				}
 			}else if(str1.equals("2")) {
 				Boolean b=true;
-				Socket socketManager = new Socket("127.0.0.1", 8086);
+				Socket socketManager = new Socket(managerIp, managerPort);
 				if (socketManager == null)
 					return;
 				ObjectOutputStream oos= new ObjectOutputStream(socketManager.getOutputStream());

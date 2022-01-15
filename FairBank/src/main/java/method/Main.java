@@ -20,7 +20,8 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] agrs) throws Exception {
         System.out.println("Bank start!");
-
+        int bankPort=8087;
+        ServerSocket socket=new ServerSocket(bankPort);
         FileInputStream fin=new FileInputStream("./bankRSAKey");
         ObjectInputStream in=new ObjectInputStream(fin);
         ArrayList<RSAKey1> keys=(ArrayList<RSAKey1>) in.readObject();
@@ -28,8 +29,6 @@ public class Main {
         RSAPublicKey publicKeyB=keys.get(2).getPublicKey();
         RSAPrivateKey privateKeyB=keys.get(2).getPrivateKey();
         RSAPublicKey publicKeyV=keys.get(1).getPublicKey();
-
-        ServerSocket socket=new ServerSocket(8087);
         while(true) {
             Socket s = socket.accept();
             ObjectOutputStream oosVendor = new ObjectOutputStream(s.getOutputStream());

@@ -20,7 +20,7 @@ The Manager and Bank store metadata information related to each transaction in a
 
 ####  Dataset
 
-We use the [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/olistbr/brazilian-ecommerce/) to test FairECom system. This is a Brazilian ecommerce public dataset of orders made at Olist Store.  The dataset has information of 100k orders from 2016 to 2018 made at multiple marketplaces in Brazil.   `Due to the limited amount of ETH in the Ethereum testnet, we only managed to store 16,697 transactions for 813 products.`  You can view these successful transactions in the t_manager table and verify that their prices are fair.  Later we will test all the data in this dataset. 
+We use the [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/olistbr/brazilian-ecommerce/) to test FairECom system. This is a Brazilian ecommerce public dataset of orders made at Olist Store.  The dataset has information of 100k orders from 2016 to 2018 made at multiple marketplaces in Brazil.   `Due to the limited amount of ETH in the Ethereum testnet, we only managed to store 31,214 transactions for 2,302 products.`  You can view these successful transactions in the t_manager table and verify that their prices are fair.  Later we will test all the data in this dataset. 
 
 ## Environmental Requirements
 
@@ -36,13 +36,16 @@ We use the [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com
 We need  four computers to simulate`Customer`, `Vendor`, `Manager` and `Bank` respectively.
 >Download the `FairCustomer`, `FairVendor` and `FairBank` folders respectively in Customer, Vendor, and Bank. Download `FairManager` and `FairPBB`folders in Manager.
 
->Modify the `ip address` and `The port number `of the socket connection in the code( if you deploy on one computer, you don't need to do this step).
+>Modify the `ip address` and `The port number `of the socket connection in the 'src\main\java\method\Main' of FairCustomer, FairVendor, FairManager and FairBank. As shown below, take FairCustomer as an example.  ( If you deploy on one computer, you don't need to do this step).
+
 
 ```java
- Socket socketManager = new Socket("127.0.0.1", 8086);
- Socket socketVendor = new Socket("127.0.0.1", 8089);
- Socket socketBank = new Socket("127.0.0.1", 8087);
+String vendorIp="127.0.0.1";
+int  vendorPort=8089;
+String managerIp="127.0.0.1";
+int managerPort=8086;
 ```
+
 
 >Create a new database 'test' in the MYSQL database of `Customer`, `Vendor`, `Manager` and `Bank` respectively. Run list_order.sql, transaction.sql in Customer and Bank respectively. Run node.sql, t_manager.sql in Manager.  The database generation statements at each side are in the corresponding folders.
 

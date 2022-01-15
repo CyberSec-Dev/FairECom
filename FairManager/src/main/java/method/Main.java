@@ -24,7 +24,8 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) throws Exception {
         System.out.println("Manager start!");
-        ServerSocket socket=new ServerSocket(8086);
+        int managerPort=8086;
+        ServerSocket socket=new ServerSocket(managerPort);
         FileInputStream fin=new FileInputStream("./managerRSAKey");
         ObjectInputStream in=new ObjectInputStream(fin);
         ArrayList<RSAKey1> keys=(ArrayList<RSAKey1>) in.readObject();
