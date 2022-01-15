@@ -58,7 +58,7 @@ We need  four computers to simulate`Customer`, `Vendor`, `Manager` and `Bank` re
 
 
 ## Usage&Result
-Run five projects (run FairCustomer at last). Next, I will show the usage and result of FairCustomer and FairPBB. The  other projects are simple to use and will not be described here. 
+Run five projects (run FairCustomer at last). The `Main function` of  FairCustomer, FairVendor, FairManager and FairBank are in 'src\main\java\method\Main'. Next, I will show the usage and result of FairCustomer and FairPBB. The  other projects are simple to use and will not be described here. 
 ### FairPBB
 > Run FairPBB. If the situation of the console is the same as that shown in the figure below, it indicates that the project is running successfully.
 
