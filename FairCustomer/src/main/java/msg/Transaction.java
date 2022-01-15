@@ -3,18 +3,16 @@ package msg;
 import java.sql.Time;
 
 public class Transaction extends Message {
-    /**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 5640986364438253804L;
-	private String tranctionId;//????
-    private String serviveId;//????
-    private String clientId;//???
-    private String venderId;//???
-    private String bankId="ChinaBank";//????
+	private String tranctionId;
+    private String serviveId;
+    private String clientId;
+    private String venderId;
+    private String bankId="ChinaBank";
     private double price;
-    private Time time;//??????
-    private int position;//¦Ë??
+    private Time time;
+    private int position;
     
     
 	public Transaction(String tranctionId, String serviveId, String clientId, String venderId, String bankId,

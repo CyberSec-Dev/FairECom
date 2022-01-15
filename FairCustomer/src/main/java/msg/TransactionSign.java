@@ -7,16 +7,16 @@ public class TransactionSign extends Message{
 	 * 
 	 */
 	private static final long serialVersionUID = -403075498127453558L;
-	private String tranctionId;// 交易
-	private String serviceId;// 服务
-	private String vendorId;// 商户
-	private String bankId;// 银行
+	private String tranctionId;
+	private String serviceId;
+	private String vendorId;
+	private String bankId;
 	private double price;
-	private int position;// 位置
+	private int position;
 	byte[] SignV;
 	byte[] SignB;
 	
-	private Time time;// 年月日
+	private Time time;
 	public TransactionSign(String tranctionId) {
 		this.tranctionId=tranctionId;
 		

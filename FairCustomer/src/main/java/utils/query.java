@@ -19,27 +19,6 @@ import java.util.Map;
 
 public class query {
     public static String getPriceRoot(String productId, double price) {
-//       // long start=System.nanoTime();
-//        SqlSession session = MybatisUtils.getSession();
-//        NodesDao mapper = session.getMapper(NodesDao.class);
-//        Nodes nodes = mapper.getNodes(productId, price);
-//        String priceroot01 = nodes.getPriceRoot();
-//       // long cost=System.nanoTime()-start;
-//
-//
-//        String address = nodes.getContractHash();
-//        int listNumber = ethStorage.getListNumber(address);
-//        String priceRoot = null;
-//        for (int i = 1; i <= listNumber; i++) {
-//            if (priceroot01.equals(ethStorage.getPrice(address, i))) {
-//                priceRoot = ethStorage.getPrice(address, i);
-//            }
-//        }
-//        if (priceRoot == null) {
-//            return "Ethereum is empty";
-//        } else {
-//            return priceRoot;
-//        }
         SqlSession session = MybatisUtils.getSession();
         NodeMapper mapper = session.getMapper(NodeMapper.class);
         List<node> nodes = new ArrayList<node>();
