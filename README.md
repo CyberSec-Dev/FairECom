@@ -16,7 +16,7 @@ The FairPBB is a project based on [Spring Boot](https://spring.io/projects/sprin
 
 `FairCustomer`, `FairVendor`,`FairBank` and `FairManager`use  Java's built-in cryptography tools(i.e., SHA, RSA) and  use socket to realize the communication of four users. 
 
-The Manager and Bank store metadata information related to each transaction in a local MySQL database.  The cryptographic accumulator(Merkle Tree)  is stored in a file via java's serialization.
+The Manager and Bank store metadata information related to each transaction in a local MySQL database.  The cryptographic accumulator(Merkle Tree)  is stored in a file at Manager via java's serialization.
 
 ####  Dataset
 
